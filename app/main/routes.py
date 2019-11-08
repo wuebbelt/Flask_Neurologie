@@ -1,24 +1,22 @@
-from flask import Flask, render_template, url_for, flash, redirect, request, session
-from forms import PatientForm, MesswerteForm, StartForm
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+from flask import render_template, url_for, flash, redirect, request, session
+from . import main
+from .forms import PatientForm, MesswerteForm, StartForm
 
 
-@app.route("/", methods=['GET', 'POST'])
-@app.route("/home", methods=['GET', 'POST'])
+@main.route("/", methods=['GET', 'POST'])
+@main.route("/home", methods=['GET', 'POST'])
 def home():
 	form = StartForm()
 	if form.validate_on_submit(): 
-		session["patient"] =  "" 
-		return redirect(url_for('patient'))
+		session["main.patient"] =  "" 
+		return redirect(url_for('main.patient'))
 	return render_template('home.html', form=form)
 
-@app.route("/about")
+@main.route("/about")
 def about():
     return render_template('about.html', title='About')
 
-@app.route("/ergebnisse")
+@main.route("/ergebnisse")
 def ergebnisse():
     data={}
     data["patient"]=session.get("patient")
@@ -34,7 +32,7 @@ def ergebnisse():
     	                    data=data)
 
 
-@app.route("/patient", methods=['GET', 'POST'])
+@main.route("/patient", methods=['GET', 'POST'])
 def patient():
     form = PatientForm()
     req = request.form
@@ -43,11 +41,11 @@ def patient():
     	session["alter"] =  req.get("alter")
     	session["schuljahre"] = req.get("schuljahre")
     	session["geschlecht"] = req.get("geschlecht") 
-    	return redirect(url_for('messwerte'))
+    	return redirect(url_for('main.messwerte'))
     return render_template('patient.html', title='Patientendaten', form=form)
 
 
-@app.route("/messwerte", methods=['GET', 'POST'])
+@main.route("/messwerte", methods=['GET', 'POST'])
 def messwerte():
     form = MesswerteForm() 
     req = request.form
@@ -58,9 +56,5 @@ def messwerte():
     	session["test4"] =  req.get("test4") 	
     	session["test5"] =  req.get("test5") 	
     	session["notizen"] =  req.get("notizen") 		
-    	return redirect(url_for('ergebnisse'))
+    	return redirect(url_for('main.ergebnisse'))
     return render_template('messwerte.html', title='Messwerte', form=form)
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
