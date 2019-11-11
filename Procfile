@@ -1,3 +1,3 @@
-web: gunicorn --log-file - neurologie:app
+web: gunicorn --log-file - app:app
 
 
