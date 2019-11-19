@@ -1,16 +1,39 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1>Patientendaten</h1>
-    Patient: {{ data["patient"] }}
-    Alter: {{ data["alter"]}}
-    Schuljahre: {{ data["schuljahre"]}}   
-    Geschlecht: {{ data["geschlecht"]}}   
-    <h1>Testergebnisse</h1>
-    Test Nr.1 - Zahlen-Symbol-Test:   {{ data["test1"]}} 
-    Test Nr.2 - ZVT-A-Testblatt: {{ data["test2"]}}   
-    Test Nr.3 - ZVT-B-Testblatt: {{ data["test3"]}}   
-    Test Nr.4 - Kreise punktieren: {{ data["test4"]}}   
-    Test Nr.5 - Linie nachfahren: {{ data["test5"]}} 
-    Notizen: {{ data["test5"]}}    
-    <h1>Score</h1>
+    <div>
+        Patient: {{ data["Patient"] }}
+    </div>    
+    <div>    
+        Alter: {{ data["age"]}}
+    </div>
+    <div>    
+        Schuljahre: {{ data["Schuljahre"]}}   
+    </div>
+    <div>
+        Geschlecht: {{ data["gender"]}}
+    </div>       
+    <h1>Scorewerte</h1>
+    <div>
+        NCTA:   {{ data["NCTA_Score"]}} 
+    </div>
+    <div>
+        NCTB: {{ data["NCTB_Score"]}}   
+    </div>
+    <div>
+        LTTTIME: {{ data["LTTTIME_Score"]}}   
+    </div>
+    <div>
+        LTTERROR: {{ data["LTTERROR_Score"]}}   
+    </div>
+    <div>
+        DST: {{ data["DST_Score"]}}   
+    </div>
+    <div>
+        SDOT: {{ data["SDOT_Score"]}} 
+    </div>
+    <div>
+        Notizen: {{ data["notizen"]}}    
+    <div>
+    <h1>Score: </h1>
 {% endblock content %}

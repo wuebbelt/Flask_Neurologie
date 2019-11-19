@@ -5,37 +5,46 @@ from wtforms.validators import DataRequired, Length, NumberRange
 class StartForm(FlaskForm):
     submit = SubmitField('Start der Auswertung')
 
+def validate_staff(form, field):
+    if field.data == "-1":
+        raise ValidationError("Sorry, you havn't chosen a staff name")
+
 class PatientForm(FlaskForm):
-    patient = StringField('Patientenidentifikation',
+    Patient = StringField('Patientenidentifikation',
                         validators=[DataRequired(), 
                                     Length(min=2, max=40)])
-    alter = IntegerField('Alter',
+    age = IntegerField('Alter',
                         validators=[DataRequired(),
                                     NumberRange(min=5, max=100)])
-    schuljahre = IntegerField('Schuljahre',
+    Schuljahre = IntegerField('Schuljahre',
                         validators=[DataRequired()])
-    geschlecht = SelectField('Geschlecht', 
-    	               choices=[('-', '--'), 
-                                ('1', 'männlich'), 
-                                ('0', 'weiblich')])
+    gender = SelectField('Geschlecht', coerce=int,
+                        choices=[(0, '--'), 
+                                (1, 'männlich'), 
+                                (2, 'weiblich')],
+                        validators=[DataRequired(message="Bitte treffen Sie eine Auswahl")])
+
     submit = SubmitField('Weiter zur Erfassung der Messwerte')
 
-
 class MesswerteForm(FlaskForm):
-    test1 = IntegerField('Test Nr.1 - Zahlen-Symbol-Test',
+    NCTA = IntegerField('Zahlen verbinden (A) (Zeit in Sekunden)',
                         validators=[DataRequired(),
                                     NumberRange(min=5, max=100)])
-    test2 = IntegerField('Test Nr.2 - ZVT-A-Testblatt', 
+    NCTB = IntegerField('Zahlen verbinden (B) (Zeit in Sekunden)', 
     	                validators=[DataRequired(),
                                     NumberRange(min=5, max=100)])
-    test3 = IntegerField('Test Nr.3 - ZVT-B-Testblatt', 
+    LTTTIME = IntegerField('Linien nachfahren (Zeit in Sekunden)', 
     	                validators=[DataRequired(),
                                     NumberRange(min=5, max=100)])
-    test4 = IntegerField('Test Nr.4 - Kreise punktieren', 
+    LTTERROR = IntegerField('Linien nachfahren (Fehler)', 
     	                validators=[DataRequired(),
                                     NumberRange(min=5, max=100)])
-    test5 = IntegerField('Test Nr.5 - Linie nachfahren', 
+    DST = IntegerField('Zahlen Symbol Test (Anzahl)', 
     	                validators=[DataRequired(),
                                     NumberRange(min=5, max=100)])
+    SDOT = IntegerField('Kreise punktieren (Zeit in Sekunden)', 
+                        validators=[DataRequired(),
+                                    NumberRange(min=5, max=100)])
+
     notizen = TextAreaField('Bemerkungen', render_kw={"rows": 5, "cols": 50})
     submit = SubmitField('Calculate Score')
