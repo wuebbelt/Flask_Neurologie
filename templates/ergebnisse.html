@@ -1,39 +1,77 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Patientendaten</h1>
-    <div>
-        Patient: {{ data["Patient"] }}
-    </div>    
-    <div>    
-        Alter: {{ data["age"]}}
-    </div>
-    <div>    
-        Schuljahre: {{ data["Schuljahre"]}}   
-    </div>
-    <div>
-        Geschlecht: {{ data["gender"]}}
-    </div>       
-    <h1>Scorewerte</h1>
-    <div>
-        NCTA:   {{ data["NCTA_Score"]}} 
-    </div>
-    <div>
-        NCTB: {{ data["NCTB_Score"]}}   
-    </div>
-    <div>
-        LTTTIME: {{ data["LTTTIME_Score"]}}   
-    </div>
-    <div>
-        LTTERROR: {{ data["LTTERROR_Score"]}}   
-    </div>
-    <div>
-        DST: {{ data["DST_Score"]}}   
-    </div>
-    <div>
-        SDOT: {{ data["SDOT_Score"]}} 
-    </div>
+
+<div class="container">
+  <h2>Patientendaten</h2>         
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>Patient</td>
+        <td>{{ data["Patient"] }}</td>
+      </tr>
+      <tr>
+        <td>Geschlecht</td>
+        <td>{{ data["age"]}}</td>
+      </tr>
+      <tr>
+        <td>Alter</td>
+        <td>{{ data["gender"]}}</td>
+      </tr>
+      <tr>
+        <td>Schuljahre</td>
+        <td>{{ data["Schuljahre"]}}</td>
+      </tr>      
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+ <h2>PSE-Score</h2>         
+  <table class="table">
+    <thead>
+      <tr>
+        <th>PSE-Test</th>
+        <th>Messwert</th>
+        <th>Scorewert</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Zahlen verbinden (A) (Zeit)</td>
+        <td>{{ data["NCTA"]}} </td>
+        <td>{{ data["NCTA_Score"]}} </td>
+      </tr>
+      <tr>
+        <td>Zahlen verbinden (B) (Zeit)</td>
+        <td>{{ data["NCTB"]}} </td>
+        <td>{{ data["NCTB_Score"]}} </td>
+      </tr>
+      <tr>
+        <td>Linien nachfahren (Zeit)</td>
+        <td>{{ data["LTTTIME"]}}</td>
+        <td>{{ data["LTTTIME_Score"]}}</td>
+      </tr>
+      <tr>
+        <td>Linien nachfahren (Fehler)</td>
+        <td>{{ data["LTTERROR"]}} </td>
+        <td>{{ data["LTTERROR_Score"]}} </td>
+      </tr>
+      <tr>
+        <td>Zahlen Symbol Test (Anzahl)</td>
+        <td>{{ data["DST"]}} </td>
+        <td>{{ data["DST_Score"]}}</td>
+      </tr>
+      <tr>
+        <td>Kreise punktieren (Zeit)</td>
+        <td>{{ data["SDOT"]}} </td>
+        <td>{{ data["SDOT_Score"]}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>   
+<div class="container">     
     <div>
         Notizen: {{ data["notizen"]}}    
     <div>
-    <h1>Score: </h1>
+</div>        
 {% endblock content %}
