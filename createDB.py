@@ -1,2 +1,2 @@
-from app import db
+from neurologie import db
 db.create_all()
