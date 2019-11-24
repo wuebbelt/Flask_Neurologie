@@ -1,9 +1,28 @@
 from flask import Flask, render_template, url_for, flash, redirect, request, session
 from forms import PatientForm, MesswerteForm, StartForm
+from flask_sqlalchemy import SQLAlchemy
 from math import sqrt, exp
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ScoresErgebnisse.db'
+db = SQLAlchemy(app)
+
+class ScoresDB(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    age = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
+    Schuljahre = db.Column(db.Integer, nullable=False)
+    NCTA = db.Column(db.Integer, nullable=True)
+    NCTB = db.Column(db.Integer, nullable=True)
+    LTTTIME = db.Column(db.Integer, nullable=True)
+    LTTERROR = db.Column(db.Integer, nullable=True)
+    DST = db.Column(db.Integer, nullable=True)
+    SDOT = db.Column(db.Integer, nullable=True)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
 
 
 def calculate_score(data):
@@ -238,6 +257,22 @@ def ergebnisse():
     data["notizen"] = session.get("notizen")
 
     data = calculate_score(data)
+
+    if (data["gender"] == 1):
+    	gender_decode = 'männlich'
+    else:
+    	gender_decode = 'weiblich'
+    scoresDB = ScoresDB(age=data["age"],
+                        gender=data["gender"],
+                        Schuljahre=data["Schuljahre"],
+                        NCTA=data["NCTA"],
+                        NCTB=data["NCTB"],
+                        LTTTIME=data["LTTTIME"],
+                        LTTERROR=data["LTTERROR"],
+                        DST=data["DST"],
+                        SDOT=data["SDOT"])
+    db.session.add(scoresDB)
+    db.session.commit()
 
     return render_template('ergebnisse.html', title='Ergebnisse', 
     	                    data=data)
