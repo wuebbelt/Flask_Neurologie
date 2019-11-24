@@ -17,7 +17,7 @@ class PatientForm(FlaskForm):
                         validators=[DataRequired()])
     gender = SelectField('Geschlecht', coerce=int,
                         choices=[(0, '--'), 
-                                (1, 'männlich'), 
+                                (1, u'männlich'), 
                                 (2, 'weiblich')],
                         validators=[DataRequired(message="Bitte treffen Sie eine Auswahl")])
 
