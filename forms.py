@@ -1,3 +1,4 @@
+# coding=utf8
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, SubmitField, StringField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, NumberRange
@@ -5,9 +6,6 @@ from wtforms.validators import DataRequired, Length, NumberRange
 class StartForm(FlaskForm):
     submit = SubmitField('Start der Auswertung')
 
-def validate_staff(form, field):
-    if field.data == "-1":
-        raise ValidationError("Sorry, you havn't chosen a staff name")
 
 class PatientForm(FlaskForm):
     Patient = StringField('Patientenidentifikation',

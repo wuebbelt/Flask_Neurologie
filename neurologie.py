@@ -1,3 +1,4 @@
+# coding=utf8
 from flask import Flask, render_template, url_for, flash, redirect, request, session
 from forms import PatientForm, MesswerteForm, StartForm
 from flask_sqlalchemy import SQLAlchemy
@@ -259,7 +260,7 @@ def ergebnisse():
     data = calculate_score(data)
 
     if (data["gender"] == 1):
-    	gender_decode = 'männlich'
+    	gender_decode = 'maennlich'
     else:
     	gender_decode = 'weiblich'
     scoresDB = ScoresDB(age=data["age"],
