@@ -297,9 +297,9 @@ def messwerte():
     form = MesswerteForm() 
     req = request.form
     
-    if form.validate_on_submit(): x = form.int_field.data if x = ' ': x=10
     if form.validate_on_submit():
-        session["NCTA"] =  req.get("NCTA")
+        print(req.get("NCTA"))
+        session["NCTA"] =  req.get("NCTA") 
         print(req.get("NCTA"))
         session["NCTB"] =  req.get("NCTB")
         session["LTTTIME"] =  req.get("LTTTIME")
