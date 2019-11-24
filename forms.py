@@ -9,8 +9,7 @@ class StartForm(FlaskForm):
 
 class PatientForm(FlaskForm):
     Patient = StringField('Patientenidentifikation',
-                        validators=[DataRequired(), 
-                                    Length(min=2, max=40)])
+                        validators=[Length(min=2, max=40)])
     age = IntegerField('Alter',
                         validators=[DataRequired(),
                                     NumberRange(min=5, max=100)])
@@ -26,23 +25,17 @@ class PatientForm(FlaskForm):
 
 class MesswerteForm(FlaskForm):
     NCTA = IntegerField('Zahlen verbinden (A) (Zeit in Sekunden)',
-                        validators=[DataRequired(),
-                                    NumberRange(min=5, max=100)])
+                        validators=[NumberRange(min=5, max=100)])
     NCTB = IntegerField('Zahlen verbinden (B) (Zeit in Sekunden)', 
-    	                validators=[DataRequired(),
-                                    NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100)])
     LTTTIME = IntegerField('Linien nachfahren (Zeit in Sekunden)', 
-    	                validators=[DataRequired(),
-                                    NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100)])
     LTTERROR = IntegerField('Linien nachfahren (Fehler)', 
-    	                validators=[DataRequired(),
-                                    NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100)])
     DST = IntegerField('Zahlen Symbol Test (Anzahl)', 
-    	                validators=[DataRequired(),
-                                    NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100)])
     SDOT = IntegerField('Kreise punktieren (Zeit in Sekunden)', 
-                        validators=[DataRequired(),
-                                    NumberRange(min=5, max=100)])
+                        validators=[NumberRange(min=5, max=100)])
 
     notizen = TextAreaField('Bemerkungen', render_kw={"rows": 5, "cols": 50})
     submit = SubmitField('Calculate Score')
