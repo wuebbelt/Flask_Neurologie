@@ -1,10 +1,11 @@
 # coding=utf8
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, SubmitField, , TextAreaField
+from wtforms import IntegerField, SubmitField, BooleanField, TextAreaField, StringField, SelectField
 from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
 class StartForm(FlaskForm):
-    AbspeichernOK =  
+    AbspeichernOK = BooleanField(u'Messwerte für ReEvaluation abspeichern?', 
+                                 validators=[DataRequired(), ]) 
     submit = SubmitField('Start der Auswertung')
 
 
@@ -35,7 +36,7 @@ class MesswerteForm(FlaskForm):
     	                validators=[NumberRange(min=5, max=100),
                       Optional()])            
     LTTERROR = IntegerField('Linien nachfahren (Fehler)', 
-    	                validators=[NumberRange(min=5, max=100)],
+    	                validators=[NumberRange(min=5, max=100),
                       Optional()])      
     DST = IntegerField('Zahlen Symbol Test (Anzahl)', 
     	                validators=[NumberRange(min=5, max=100),
