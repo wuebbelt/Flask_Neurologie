@@ -236,12 +236,12 @@ def home():
 	form = StartForm()
 	if form.validate_on_submit(): 
 		session["patient"] =  "" 
-    session["AbspeichernOK"] = "False"
-    if form.AbspeichernOK.data is True:
-      flash('You agreed!')
+		session["AbspeichernOK"] = False
+		if form.AbspeichernOK.data is True:
+			session["AbspeichernOK"] = True
+			print(session["AbspeichernOK"] )
 		return redirect(url_for('patient'))
 	return render_template('home.html', form=form)
-
 
 @app.route("/about")
 def about():

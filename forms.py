@@ -4,8 +4,7 @@ from wtforms import IntegerField, SubmitField, BooleanField, TextAreaField, Stri
 from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
 class StartForm(FlaskForm):
-    AbspeichernOK = BooleanField(u'Messwerte für ReEvaluation abspeichern?', 
-                                 validators=[DataRequired(), ]) 
+    AbspeichernOK = BooleanField(u'Messwerte für ReEvaluation abspeichern?') 
     submit = SubmitField('Start der Auswertung')
 
 
