@@ -24,6 +24,7 @@ class ScoresDB(db.Model):
     SDOT = db.Column(db.Integer, nullable=True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+
 def calculate_score(data):
 
 	"""
@@ -41,7 +42,7 @@ def calculate_score(data):
 	Schuljahre
 	"""
 
-    data["Gesamt_Score"] = 0
+	data["Gesamt_Score"] = 0
 
 	age = int(data["age"])
 	gender = int(data["gender"])
