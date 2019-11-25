@@ -34,7 +34,7 @@ def calculate_score(data):
 	LTTTIME 'LTT time: Line Tracing test (time); LNZ: Linien nachfahren (Zeit)'/
 	LTTERROR  'LTT Error: Line Tracing test (errors); LNZ: Linien nachfahren (Fehler)'/
 	DST 'DST: Digit Symbol test; ZS: Zahlen Symbol Test (Anzahl)'/
-	SDOT 'SDOT: Serial Dotting test; KP: Kreise punktieren (Zeit)'/.
+	SDOT 'SDOT: Serial Dotting test; KP: Kreise punktieren (Zeit)'/
 
 	Covariates:
 	age
@@ -45,7 +45,9 @@ def calculate_score(data):
 	age = int(data["age"])
 	gender = int(data["gender"])
 	Schuljahre = int(data["Schuljahre"])
-	NCTA = int(data["NCTA"])
+  
+  if data["NCTA"] == 5:
+		FormalEducation = 1
 	NCTB = int(data["NCTB"])
 	LTTTIME = int(data["LTTTIME"])
 	LTTERROR = int(data["LTTERROR"])
@@ -295,11 +297,7 @@ def patient():
 def messwerte():
     form = MesswerteForm() 
     req = request.form
-    print(form.validate_on_submit())
-    print(req.get("NCTA"))
     session["NCTA"] =  req.get("NCTA", None) 
-    print(session["NCTA"])
-    if session["NCTA"] == '': print("Hallo")
     if form.validate_on_submit():
         print(req.get("NCTA"))
         session["NCTA"] =  req.get("NCTA", None) 
