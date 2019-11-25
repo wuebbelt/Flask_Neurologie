@@ -24,7 +24,6 @@ class ScoresDB(db.Model):
     SDOT = db.Column(db.Integer, nullable=True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-
 def calculate_score(data):
 
 	"""
@@ -34,18 +33,17 @@ def calculate_score(data):
 	LTTTIME 'LTT time: Line Tracing test (time); LNZ: Linien nachfahren (Zeit)'/
 	LTTERROR  'LTT Error: Line Tracing test (errors); LNZ: Linien nachfahren (Fehler)'/
 	DST 'DST: Digit Symbol test; ZS: Zahlen Symbol Test (Anzahl)'/
-	SDOT 'SDOT: Serial Dotting test; KP: Kreise punktieren (Zeit)'/
+	SDOT 'SDOT: Serial Dotting test; KP: Kreise punktieren (Zeit)'/.
 
 	Covariates:
 	age
 	gender
 	Schuljahre
-		"""
+	"""
 
 	age = int(data["age"])
 	gender = int(data["gender"])
 	Schuljahre = int(data["Schuljahre"])
-  print(data["NCTA"])
 	if data["NCTA"] is not None:
 		NCTA = int(data["NCTA"])
 	NCTB = int(data["NCTB"])
@@ -53,7 +51,6 @@ def calculate_score(data):
 	LTTERROR = int(data["LTTERROR"])
 	DST = int(data["DST"])
 	SDOT = int(data["SDOT"])
-
 
 	# Umkodierung (falls nötig):  Schuljahre in 3 Kategorien
 	# Formal Educarion as contrast variables 
@@ -82,7 +79,9 @@ def calculate_score(data):
 	gender -= 1	
 
 	# NCTA 
-	if data["NCTA"] is not None:
+	print(type(data["NCTA"]))
+	
+	if data["NCTA"] is not None and data["NCTA"] != '':
 		aNCTACovarH2019 = 2.641457
 		b_ageNCTACovarH2019 = 0.010871
 		b_FormalEducation2NCTACovarH2019 = 0
