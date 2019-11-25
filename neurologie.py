@@ -45,10 +45,8 @@ def calculate_score(data):
 	age = int(data["age"])
 	gender = int(data["gender"])
 	Schuljahre = int(data["Schuljahre"])
-  
-  if data["NCTA"] == 5:
-		FormalEducation = 1
-	NCTB = int(data["NCTB"])
+  NCTA = int(data["NCTA"])
+  NCTB = int(data["NCTB"])
 	LTTTIME = int(data["LTTTIME"])
 	LTTERROR = int(data["LTTERROR"])
 	DST = int(data["DST"])
