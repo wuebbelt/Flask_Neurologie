@@ -279,24 +279,25 @@ def ergebnisse():
 
     data = calculate_score(data)
 
-    if (data["gender"] == 1):
-    	gender_decode = 'maennlich'
-    else:
-    	gender_decode = 'weiblich'
-    scoresDB = ScoresDB(age=data["age"],
-                        gender=data["gender"],
-                        Schuljahre=data["Schuljahre"],
-                        NCTA=data["NCTA"],
-                        NCTB=data["NCTB"],
-                        LTTTIME=data["LTTTIME"],
-                        LTTERROR=data["LTTERROR"],
-                        DST=data["DST"],
-                        SDOT=data["SDOT"])
-    db.session.add(scoresDB)
-    db.session.commit()
+    if session.get("AbspeichernOK"):
+        if (data["gender"] == 1):
+            gender_decode = 'maennlich'
+        else:
+            gender_decode = 'weiblich'
+        scoresDB = ScoresDB(age=data["age"],
+                            gender=data["gender"],
+                            Schuljahre=data["Schuljahre"],
+                            NCTA=data["NCTA"],
+                            NCTB=data["NCTB"],
+                            LTTTIME=data["LTTTIME"],
+                            LTTERROR=data["LTTERROR"],
+                            DST=data["DST"],
+                            SDOT=data["SDOT"])
+        db.session.add(scoresDB)
+        db.session.commit()
 
     return render_template('ergebnisse.html', title='Ergebnisse', 
-    	                    data=data)
+                            data=data)
 
 @app.route("/patient", methods=['GET', 'POST'])
 def patient():
