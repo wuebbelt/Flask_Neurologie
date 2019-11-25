@@ -1,9 +1,10 @@
 # coding=utf8
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, SubmitField, StringField, SelectField, TextAreaField
-from wtforms.validators import DataRequired, Length, NumberRange
+from wtforms import IntegerField, SubmitField, BooleanField, TextAreaField, StringField, SelectField
+from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
 class StartForm(FlaskForm):
+    AbspeichernOK = BooleanField(u'Messwerte für ReEvaluation abspeichern?') 
     submit = SubmitField('Start der Auswertung')
 
 
@@ -17,7 +18,7 @@ class PatientForm(FlaskForm):
                         validators=[DataRequired()])
     gender = SelectField('Geschlecht', coerce=int,
                         choices=[(0, '--'), 
-                                (1, 'männlich'), 
+                                (1, u'männlich'), 
                                 (2, 'weiblich')],
                         validators=[DataRequired(message="Bitte treffen Sie eine Auswahl")])
 
@@ -25,17 +26,23 @@ class PatientForm(FlaskForm):
 
 class MesswerteForm(FlaskForm):
     NCTA = IntegerField('Zahlen verbinden (A) (Zeit in Sekunden)',
-                        validators=[NumberRange(min=5, max=100)])
+                        validators=[NumberRange(min=5, max=100),
+                        Optional()])
     NCTB = IntegerField('Zahlen verbinden (B) (Zeit in Sekunden)', 
-    	                validators=[NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100), 
+                      Optional()])            
     LTTTIME = IntegerField('Linien nachfahren (Zeit in Sekunden)', 
-    	                validators=[NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100),
+                      Optional()])            
     LTTERROR = IntegerField('Linien nachfahren (Fehler)', 
-    	                validators=[NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100),
+                      Optional()])      
     DST = IntegerField('Zahlen Symbol Test (Anzahl)', 
-    	                validators=[NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100),
+                      Optional()])            
     SDOT = IntegerField('Kreise punktieren (Zeit in Sekunden)', 
-                        validators=[NumberRange(min=5, max=100)])
+                        validators=[NumberRange(min=5, max=100),
+                        Optional()])
 
     notizen = TextAreaField('Bemerkungen', render_kw={"rows": 5, "cols": 50})
     submit = SubmitField('Calculate Score')
