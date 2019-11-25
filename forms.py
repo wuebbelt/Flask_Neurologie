@@ -1,9 +1,10 @@
 # coding=utf8
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, SubmitField, StringField, SelectField, TextAreaField
+from wtforms import IntegerField, SubmitField, , TextAreaField
 from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
 class StartForm(FlaskForm):
+    AbspeichernOK =  
     submit = SubmitField('Start der Auswertung')
 
 
@@ -28,15 +29,20 @@ class MesswerteForm(FlaskForm):
                         validators=[NumberRange(min=5, max=100),
                         Optional()])
     NCTB = IntegerField('Zahlen verbinden (B) (Zeit in Sekunden)', 
-    	                validators=[NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100), 
+                      Optional()])            
     LTTTIME = IntegerField('Linien nachfahren (Zeit in Sekunden)', 
-    	                validators=[NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100),
+                      Optional()])            
     LTTERROR = IntegerField('Linien nachfahren (Fehler)', 
-    	                validators=[NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100)],
+                      Optional()])      
     DST = IntegerField('Zahlen Symbol Test (Anzahl)', 
-    	                validators=[NumberRange(min=5, max=100)])
+    	                validators=[NumberRange(min=5, max=100),
+                      Optional()])            
     SDOT = IntegerField('Kreise punktieren (Zeit in Sekunden)', 
-                        validators=[NumberRange(min=5, max=100)])
+                        validators=[NumberRange(min=5, max=100),
+                        Optional()])
 
     notizen = TextAreaField('Bemerkungen', render_kw={"rows": 5, "cols": 50})
     submit = SubmitField('Calculate Score')
