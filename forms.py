@@ -1,7 +1,7 @@
 # coding=utf8
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, SubmitField, StringField, SelectField, TextAreaField
-from wtforms.validators import DataRequired, Length, NumberRange
+from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
 class StartForm(FlaskForm):
     submit = SubmitField('Start der Auswertung')
@@ -25,7 +25,8 @@ class PatientForm(FlaskForm):
 
 class MesswerteForm(FlaskForm):
     NCTA = IntegerField('Zahlen verbinden (A) (Zeit in Sekunden)',
-                        validators=[NumberRange(min=5, max=100)])
+                        validators=[NumberRange(min=5, max=100),
+                        Optional()])
     NCTB = IntegerField('Zahlen verbinden (B) (Zeit in Sekunden)', 
     	                validators=[NumberRange(min=5, max=100)])
     LTTTIME = IntegerField('Linien nachfahren (Zeit in Sekunden)', 

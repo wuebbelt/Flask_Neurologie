@@ -25,7 +25,6 @@ class ScoresDB(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
-
 def calculate_score(data):
 
 	"""
