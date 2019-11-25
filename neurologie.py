@@ -44,9 +44,10 @@ def calculate_score(data):
 	age = int(data["age"])
 	gender = int(data["gender"])
 	Schuljahre = int(data["Schuljahre"])
-	if data["NCTA"] is not None:
+	if data["NCTA"].isnumeric():
 		NCTA = int(data["NCTA"])
-	NCTB = int(data["NCTB"])
+  if data["NCTA"].isnumeric():
+	  NCTB = int(data["NCTB"])
 	LTTTIME = int(data["LTTTIME"])
 	LTTERROR = int(data["LTTERROR"])
 	DST = int(data["DST"])
@@ -81,7 +82,7 @@ def calculate_score(data):
 	# NCTA 
 	print(type(data["NCTA"]))
 	
-	if data["NCTA"] is not None and data["NCTA"] != '':
+	if data["NCTA"].isnumeric():
 		aNCTACovarH2019 = 2.641457
 		b_ageNCTACovarH2019 = 0.010871
 		b_FormalEducation2NCTACovarH2019 = 0
