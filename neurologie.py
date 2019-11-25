@@ -236,6 +236,9 @@ def home():
 	form = StartForm()
 	if form.validate_on_submit(): 
 		session["patient"] =  "" 
+    session["AbspeichernOK"] = "False"
+    if form.AbspeichernOK.data is True:
+      flash('You agreed!')
 		return redirect(url_for('patient'))
 	return render_template('home.html', form=form)
 
