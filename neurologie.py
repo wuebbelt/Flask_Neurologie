@@ -40,17 +40,20 @@ def calculate_score(data):
 	age
 	gender
 	Schuljahre
-	"""
+		"""
 
 	age = int(data["age"])
 	gender = int(data["gender"])
 	Schuljahre = int(data["Schuljahre"])
-  NCTA = int(data["NCTA"])
-  NCTB = int(data["NCTB"])
+  print(data["NCTA"])
+	if data["NCTA"] is not None:
+		NCTA = int(data["NCTA"])
+	NCTB = int(data["NCTB"])
 	LTTTIME = int(data["LTTTIME"])
 	LTTERROR = int(data["LTTERROR"])
 	DST = int(data["DST"])
 	SDOT = int(data["SDOT"])
+
 
 	# Umkodierung (falls nötig):  Schuljahre in 3 Kategorien
 	# Formal Educarion as contrast variables 
@@ -79,25 +82,26 @@ def calculate_score(data):
 	gender -= 1	
 
 	# NCTA 
-	aNCTACovarH2019 = 2.641457
-	b_ageNCTACovarH2019 = 0.010871
-	b_FormalEducation2NCTACovarH2019 = 0
-	b_FormalEducation3NCTACovarH2019=  0
-	sNCTACovarH2019 = sqrt(0.079413)
+	if data["NCTA"] is not None:
+		aNCTACovarH2019 = 2.641457
+		b_ageNCTACovarH2019 = 0.010871
+		b_FormalEducation2NCTACovarH2019 = 0
+		b_FormalEducation3NCTACovarH2019=  0
+		sNCTACovarH2019 = sqrt(0.079413)
 
-	NCTA0COVARH2019  = exp(aNCTACovarH2019  + b_ageNCTACovarH2019 *age + b_FormalEducation2NCTACovarH2019 * FormalEducation2    + b_FormalEducation3NCTACovarH2019 * FormalEducation3 + 0 *sNCTACovarH2019  )
-	NCTA1COVARH2019  = exp(aNCTACovarH2019  + b_ageNCTACovarH2019 *age + b_FormalEducation2NCTACovarH2019 * FormalEducation2    + b_FormalEducation3NCTACovarH2019 * FormalEducation3 + 1 * sNCTACovarH2019  )
-	NCTA2COVARH2019  = exp(aNCTACovarH2019 + b_ageNCTACovarH2019 *age + b_FormalEducation2NCTACovarH2019 * FormalEducation2    + b_FormalEducation3NCTACovarH2019 * FormalEducation3 + 2* sNCTACovarH2019 )
-	NCTA3COVARH2019  = exp(aNCTACovarH2019  + b_ageNCTACovarH2019 *age + b_FormalEducation2NCTACovarH2019 * FormalEducation2    + b_FormalEducation3NCTACovarH2019 * FormalEducation3 + 3 * sNCTACovarH2019  )
-	NCTAm1COVARH2019 = exp(aNCTACovarH2019  + b_ageNCTACovarH2019 *age + b_FormalEducation2NCTACovarH2019 * FormalEducation2    + b_FormalEducation3NCTACovarH2019 * FormalEducation3 - 1 * sNCTACovarH2019 )
+		NCTA0COVARH2019  = exp(aNCTACovarH2019  + b_ageNCTACovarH2019 *age + b_FormalEducation2NCTACovarH2019 * FormalEducation2    + b_FormalEducation3NCTACovarH2019 * FormalEducation3 + 0 *sNCTACovarH2019  )
+		NCTA1COVARH2019  = exp(aNCTACovarH2019  + b_ageNCTACovarH2019 *age + b_FormalEducation2NCTACovarH2019 * FormalEducation2    + b_FormalEducation3NCTACovarH2019 * FormalEducation3 + 1 * sNCTACovarH2019  )
+		NCTA2COVARH2019  = exp(aNCTACovarH2019 + b_ageNCTACovarH2019 *age + b_FormalEducation2NCTACovarH2019 * FormalEducation2    + b_FormalEducation3NCTACovarH2019 * FormalEducation3 + 2* sNCTACovarH2019 )
+		NCTA3COVARH2019  = exp(aNCTACovarH2019  + b_ageNCTACovarH2019 *age + b_FormalEducation2NCTACovarH2019 * FormalEducation2    + b_FormalEducation3NCTACovarH2019 * FormalEducation3 + 3 * sNCTACovarH2019  )
+		NCTAm1COVARH2019 = exp(aNCTACovarH2019  + b_ageNCTACovarH2019 *age + b_FormalEducation2NCTACovarH2019 * FormalEducation2    + b_FormalEducation3NCTACovarH2019 * FormalEducation3 - 1 * sNCTACovarH2019 )
 
-	NCTAScoreNormCOVARH2019 = 0
-	if (NCTA >= NCTA1COVARH2019 ): NCTAScoreNormCOVARH2019 = -1
-	if (NCTA >= NCTA2COVARH2019 ): NCTAScoreNormCOVARH2019  = -2
-	if (NCTA >= NCTA3COVARH2019 ): NCTAScoreNormCOVARH2019 = -3
-	if (NCTA <= NCTAm1COVARH2019): NCTAScoreNormCOVARH2019  = +1
+		NCTAScoreNormCOVARH2019 = 0
+		if (NCTA >= NCTA1COVARH2019 ): NCTAScoreNormCOVARH2019 = -1
+		if (NCTA >= NCTA2COVARH2019 ): NCTAScoreNormCOVARH2019  = -2
+		if (NCTA >= NCTA3COVARH2019 ): NCTAScoreNormCOVARH2019 = -3
+		if (NCTA <= NCTAm1COVARH2019): NCTAScoreNormCOVARH2019  = +1
 
-	data["NCTA_Score"] = NCTAScoreNormCOVARH2019
+		data["NCTA_Score"] = NCTAScoreNormCOVARH2019
 
 
 	# NCTB
