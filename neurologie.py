@@ -297,6 +297,10 @@ def messwerte():
     form = MesswerteForm() 
     req = request.form
     print(form.validate_on_submit())
+    print(req.get("NCTA"))
+    session["NCTA"] =  req.get("NCTA", None) 
+    print(session["NCTA"])
+    if session["NCTA"] == '': print("Hallo")
     if form.validate_on_submit():
         print(req.get("NCTA"))
         session["NCTA"] =  req.get("NCTA", None) 
