@@ -328,7 +328,7 @@ def messwerte():
     if form.validate_on_submit():
         session["NCTA"] =  req.get("NCTA") 
         if session["NCTA"] > 10:
-          flash("Test", warning)
+          flash("Test", 'warning')
         session["NCTB"] =  req.get("NCTB")
         session["LTTTIME"] =  req.get("LTTTIME")
         session["LTTERROR"] = req.get("LTTERROR")
