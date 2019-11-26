@@ -11,11 +11,15 @@
       </tr>
       <tr>
         <td>Geschlecht</td>
-        <td>{{ data["age"]}}</td>
+         {% if  data["gender"] == 1 %}
+            <td>männlich</td>
+         {% else %}
+            <td>weiblich</td>
+        {% endif %}
       </tr>
       <tr>
         <td>Alter</td>
-        <td>{{ data["gender"]}}</td>
+        <td>{{ data["age"]}}</td>
       </tr>
       <tr>
         <td>Schuljahre</td>
