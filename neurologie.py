@@ -252,7 +252,6 @@ def home():
 		session["AbspeichernOK"] = False
 		if form.AbspeichernOK.data is True:
 			session["AbspeichernOK"] = True
-			print(session["AbspeichernOK"] )
 		return redirect(url_for('patient'))
 	return render_template('home.html', form=form)
 
