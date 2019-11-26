@@ -79,17 +79,19 @@
       </tr>
     </tbody>
   </table>
-</div>   
-<div class="container">     
-    <div>
-        <h2>
-          Gesamtscore: {{ data["Gesamt_Score"]}}  
-        </h2>   
-    </div>
 </div>  
-<div class="container">     
-    <div>
-        Notizen: {{ data["notizen"]}}    
-    <div>
-</div>        
+{% if  data["MesswertMissing"] == False %}
+    <div class="container">     
+        <div>
+            <h2>Gesamtscore: {{ data["Gesamt_Score"]}}</h2>   
+        </div>
+    </div>  
+{% endif %} 
+{% if  data["notizen"] != '' %}
+    <div class="container">     
+        <div>
+            <h2>Notizen: {{ data["notizen"]}}</h2>    
+        <div>
+    </div>
+{% endif %}             
 {% endblock content %}

@@ -85,6 +85,7 @@ def calculate_score(data):
 
 	# gender
 	gender -= 1	
+	data["MesswertMissing"] = False
 
 	# NCTA 
 	if data["NCTA"].isnumeric():
@@ -109,6 +110,9 @@ def calculate_score(data):
 		data["NCTA_Score"] = NCTAScoreNormCOVARH2019
 		data["Gesamt_Score"] += NCTAScoreNormCOVARH2019
 
+	else:
+		data["MesswertMissing"] = True
+
 
 	# NCTB
 	if data["NCTB"].isnumeric():
@@ -132,7 +136,8 @@ def calculate_score(data):
 
 		data["NCTB_Score"] = NCTBScoreNormCOVARH2019
 		data["Gesamt_Score"] += NCTBScoreNormCOVARH2019
-
+	else:
+		data["MesswertMissing"] = True
 	
 	# LTT Time 
 	if data["LTTTIME"].isnumeric():
@@ -156,6 +161,8 @@ def calculate_score(data):
 
 		data["LTTTIME_Score"] = LTTTIMEScoreNormCOVARH2019
 		data["Gesamt_Score"] += LTTTIMEScoreNormCOVARH2019
+	else:
+		data["MesswertMissing"] = True
 
 
 	# LTT Error
@@ -180,6 +187,8 @@ def calculate_score(data):
 
 		data["LTTERROR_Score"] = LTTERRORScoreNormCOVARH2019 
 		data["Gesamt_Score"] +=  LTTERRORScoreNormCOVARH2019
+	else:
+		data["MesswertMissing"] = True
 
 	#  DST
 	if data["DST"].isnumeric():
@@ -204,6 +213,8 @@ def calculate_score(data):
 
 		data["DST_Score"] = DSTScoreNormCOVARH2019
 		data["Gesamt_Score"] += DSTScoreNormCOVARH2019
+	else:
+		data["MesswertMissing"] = True
 
 
 	# SDOT	
@@ -227,6 +238,8 @@ def calculate_score(data):
 
 		data["SDOT_Score"] = SDOTScoreNormCOVARH2019
 		data["Gesamt_Score"] += SDOTScoreNormCOVARH2019
+	else:
+		data["MesswertMissing"] = True
 
 	return data
 
@@ -280,10 +293,6 @@ def ergebnisse():
     data = calculate_score(data)
 
     if session.get("AbspeichernOK"):
-        if (data["gender"] == 1):
-            gender_decode = 'maennlich'
-        else:
-            gender_decode = 'weiblich'
         scoresDB = ScoresDB(age=data["age"],
                             gender=data["gender"],
                             Schuljahre=data["Schuljahre"],
