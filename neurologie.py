@@ -325,17 +325,20 @@ def patient():
 def messwerte():
     form = MesswerteForm() 
     req = request.form
+    geflasht = False
     if form.validate_on_submit():
         session["NCTA"] =  req.get("NCTA") 
         if int(session["NCTA"]) > 10:
-          flash("Test", 'warning')
-        flash("Test", 'warning')          
+          flash("Extremer Wert NCTA", 'warning')
+          geflasht = True          
         session["NCTB"] =  req.get("NCTB")
         session["LTTTIME"] =  req.get("LTTTIME")
         session["LTTERROR"] = req.get("LTTERROR")
         session["DST"] =  req.get("DST")
         session["SDOT"] =  req.get("SDOT")
         session["notizen"] =  req.get("notizen")
+        if geflasht:
+          flash(u"Korrekturmöglichkeit mit Browsernavigation")
         return redirect(url_for('ergebnisse'))
     return render_template('messwerte.html', title='Messwerte', 
     						form=form)    
