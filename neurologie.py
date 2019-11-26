@@ -328,8 +328,8 @@ def messwerte():
     geflasht = False
     if form.validate_on_submit():
         session["NCTA"] =  req.get("NCTA") 
-        if int(session["NCTA"]) > 10:
-          #flash(u"Extremer Wert fuer 'Zahlen verbinden (A)' ", 'warning')
+        if int(session["NCTA"]) > 100:
+          flash(u"Extremer Wert für 'Zahlen verbinden (A)' ", 'warning')
           geflasht = True          
         session["NCTB"] =  req.get("NCTB")
         session["LTTTIME"] =  req.get("LTTTIME")
@@ -338,7 +338,7 @@ def messwerte():
         session["SDOT"] =  req.get("SDOT")
         session["notizen"] =  req.get("notizen")
         #if geflasht:
-        #  flash(u"Korrekturmoeglichkeit mit Browsernavigation")
+        flash(u"Korrekturmöglichkeit mit Browsernavigation", 'info')
         return redirect(url_for('ergebnisse'))
     return render_template('messwerte.html', title='Messwerte', 
     						form=form)    
