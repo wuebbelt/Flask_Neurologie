@@ -325,11 +325,10 @@ def patient():
 def messwerte():
     form = MesswerteForm() 
     req = request.form
-    session["NCTA"] =  req.get("NCTA", None) 
     if form.validate_on_submit():
-        print(req.get("NCTA"))
-        session["NCTA"] =  req.get("NCTA", None) 
-        print(req.get("NCTA"))
+        session["NCTA"] =  req.get("NCTA") 
+        if session["NCTA"] > 10:
+          flash("Test", warning)
         session["NCTB"] =  req.get("NCTB")
         session["LTTTIME"] =  req.get("LTTTIME")
         session["LTTERROR"] = req.get("LTTERROR")
