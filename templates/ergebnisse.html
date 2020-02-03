@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<nav
+        class="navbar navbar-expand-md navbar-dark bg-steel fixed-top"
+        style="background-color:#db0202;"
+      >
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">PSE-Syndrom Test</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarToggle"
+            aria-controls="navbarToggle"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('patient') }}"
+                >Neuer Patient</a
+              >
+            </div>
+  
+          </div>
+       
+        </div>
+      </nav>
+
+
+<div class="container">
+  <h2>Patientendaten</h2>         
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>Patient</td>
+        <td>{{ data["Patient"] }}</td>
+      </tr>
+      <tr>
+        <td>Geschlecht</td>
+         {% if  data["gender"] == 1 %}
+            <td>männlich</td>
+         {% else %}
+            <td>weiblich</td>
+        {% endif %}
+      </tr>
+      <tr>
+        <td>Alter</td>
+        <td>{{ data["age"]}}</td>
+      </tr>
+      <tr>
+        <td>Schuljahre</td>
+        <td>{{ data["Schuljahre"]}}</td>
+      </tr>         
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+ <h2>PSE-Score</h2>         
+  <table class="table">
+    <thead>
+      <tr>
+        <th>PSE-Test</th>
+        <th>Messwert</th>
+        <th>Scorewert</th>
+        <th></th>        
+      </tr>
+    </thead>
+    <tbody>    
+    <tr>      
+        <td>Zahlen Symbol Test (Anzahl)</td>
+        <td>{{ data["DST"]}} </td>
+        <td>{{ data["DST_Score"]}}</td>
+      </tr>  
+        <tr>
+        <td>Zahlen verbinden (A) (Zeit)</td>
+        <td>{{ data["NCTA"]}} </td>
+        <td>{{ data["NCTA_Score"]}} </td>
+      </tr>
+      <tr>
+        <td>Zahlen verbinden (B) (Zeit)</td>
+        <td>{{ data["NCTB"]}} </td>
+        <td>{{ data["NCTB_Score"]}} </td>
+      </tr>  
+      <tr>
+        <td>Kreise punktieren (Zeit)</td>
+        <td>{{ data["SDOT"]}} </td>
+        <td>{{ data["SDOT_Score"]}}</td>
+      </tr>
+      <tr>
+        <td>Linien nachfahren (Zeit)</td>
+        <td>{{ data["LTTTIME"]}}</td>
+        <td>{{ data["LTTTIME_Score"]}}</td>
+      </tr>     
+      <tr>
+        <td>Linien nachfahren (Fehler)</td>
+        <td>{{ data["LTTERROR"]}} </td>
+        <td>{{ data["LTTERROR_Score"]}} </td>
+      </tr>            
+    </tbody>
+  </table>
+</div>  
+
+    <div class="container">     
+        <div>
+            <h2>Gesamtscore: {{ data["Gesamt_Score"]}}</h2>   
+        </div>
+    </div>  
+ 
+{% if  data["notizen"] != '' %}
+    <div class="container">     
+        <div>
+          <h2>Notizen:</h2> {{ data["notizen"]}}    
+      </div>
+    </div>
+{% endif %}  
+
+   <div class="container">     
+        <div>
+          {{ data["Datum"]}}   
+        </div>
+    </div>  
+{% endblock content %}

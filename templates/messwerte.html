@@ -1,0 +1,138 @@
+ {% extends "layout.html" %} {% block content %}
+
+
+<nav
+        class="navbar navbar-expand-md navbar-dark bg-steel fixed-top"
+        style="background-color:#db0202;"
+      >
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">PSE-Syndrom Test</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarToggle"
+            aria-controls="navbarToggle"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('patient') }}"
+                >Neuer Patient</a
+              >
+            </div>
+  
+          </div>
+       
+        </div>
+      </nav>
+
+
+<div class="content-section">
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">
+        <h2>
+          Eingabe der Messwerte
+        </h2>
+      </legend>
+
+      <div class="form-group">
+        {{ form.DST.label(class="form-control-label") }} {% if form.DST.errors
+        %} {{ form.DST(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.DST.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{ form.DST(class="form-control form-control-lg") }} {% endif
+        %}
+      </div>
+
+      <div class="form-group">
+        {{ form.NCTA.label(class="form-control-label") }} {% if form.NCTA.errors
+        %} {{ form.NCTA(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.NCTA.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{form.NCTA(class="form-control form-control-lg") }} {% endif
+        %}
+      </div>
+
+      <div class="form-group">
+        {{ form.NCTB.label(class="form-control-label") }} {% if form.NCTB.errors
+        %} {{ form.NCTB(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.NCTB.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{form.NCTB(class="form-control form-control-lg") }} {% endif
+        %}
+      </div>
+
+      <div class="form-group">
+        {{ form.SDOT.label(class="form-control-label") }} {% if form.SDOT.errors
+        %} {{ form.SDOT(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.SDOT.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{form.SDOT(class="form-control form-control-lg") }} {% endif
+        %}
+      </div>
+
+      <div class="form-group">
+        {{ form.LTTTIME.label(class="form-control-label") }} {% if
+        form.LTTTIME.errors %} {{ form.LTTTIME(class="form-control
+        form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.LTTTIME.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{form.LTTTIME(class="form-control form-control-lg") }} {%
+        endif %}
+      </div>
+
+      <div class="form-group">
+        {{ form.LTTERROR.label(class="form-control-label") }} {% if
+        form.LTTERROR.errors %} {{ form.LTTERROR(class="form-control
+        form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.LTTERROR.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{form.LTTERROR(class="form-control form-control-lg") }} {%
+        endif %}
+      </div>
+
+      <div class="form-group">
+        {{ form.notizen.label(class="form-control-label") }} 
+        {% if form.notizen.errors %} 
+        {{ form.LTTERROR(class="form-control form-control-lg is-invalid") }}   
+         <div class="invalid-feedback">
+          {% for error in form.notizen.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %}              
+        {{ form.notizen(class="form-control form-control-lg") }}
+        {% endif %}
+      </div>
+    </fieldset>
+    
+    <div class="form-group">
+      {{ form.submit(class="btn btn-outline-info") }}
+    </div>
+  </form>
+</div>
+{% endblock content %}
