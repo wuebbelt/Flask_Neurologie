@@ -1,27 +1,42 @@
 # coding=utf8
 from flask import Flask, render_template, url_for, flash, redirect, request, session
-from forms import PatientForm, MesswerteForm, StartForm
+from flask_basicauth import BasicAuth
+from forms import PatientForm, PatientMHHForm, MesswerteForm
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import logout_user
 from math import sqrt, exp
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+app.config['SECRET_KEY'] = '5791628'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///.data/ScoresErgebnisse.db'
+app.config['BASIC_AUTH_USERNAME'] = 'PSE'
+app.config['BASIC_AUTH_PASSWORD'] = 'Schomerus'
 db = SQLAlchemy(app)
+basic_auth = BasicAuth(app)
 
 class ScoresDB(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
-    age = db.Column(db.Integer, nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
+    ID = db.Column(db.Integer, primary_key=True)
+    Studie = db.Column(db.String(200), nullable=False)
+    Pseudonym = db.Column(db.String(200), nullable=False)
+    Alter = db.Column(db.Integer, nullable=False)
+    Geschlecht = db.Column(db.String(10), nullable=False)
     Schuljahre = db.Column(db.Integer, nullable=False)
     NCTA = db.Column(db.Integer, nullable=True)
+    NCTA_Score = db.Column(db.Integer, nullable=False)
     NCTB = db.Column(db.Integer, nullable=True)
+    NCTB_Score = db.Column(db.Integer, nullable=False)
     LTTTIME = db.Column(db.Integer, nullable=True)
+    LTTTIME_Score = db.Column(db.Integer, nullable=False)
     LTTERROR = db.Column(db.Integer, nullable=True)
+    LTTERROR_Score = db.Column(db.Integer, nullable=False)
     DST = db.Column(db.Integer, nullable=True)
+    DST_Score = db.Column(db.Integer, nullable=False)
     SDOT = db.Column(db.Integer, nullable=True)
+    SDOT_Score = db.Column(db.Integer, nullable=False)
+    Gesamt_Score = db.Column(db.Integer, nullable=False)
+    Bemerkungen = db.Column(db.String(500), nullable=True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
@@ -85,7 +100,6 @@ def calculate_score(data):
 
 	# gender
 	gender -= 1	
-	data["MesswertMissing"] = False
 
 	# NCTA 
 	if data["NCTA"].isnumeric():
@@ -111,9 +125,10 @@ def calculate_score(data):
 		data["Gesamt_Score"] += NCTAScoreNormCOVARH2019
 
 	else:
-		data["MesswertMissing"] = True
-
-
+		data["NCTA_Score"] = -3
+		data["Gesamt_Score"] += -3
+		data["NCTA"] = 'missing'    
+    
 	# NCTB
 	if data["NCTB"].isnumeric():
 		aNCTBCovarH2019 = 3.830604
@@ -137,7 +152,9 @@ def calculate_score(data):
 		data["NCTB_Score"] = NCTBScoreNormCOVARH2019
 		data["Gesamt_Score"] += NCTBScoreNormCOVARH2019
 	else:
-		data["MesswertMissing"] = True
+		data["NCTB_Score"] = -3
+		data["Gesamt_Score"] += -3
+		data["NCTB"] = 'missing'    
 	
 	# LTT Time 
 	if data["LTTTIME"].isnumeric():
@@ -162,9 +179,10 @@ def calculate_score(data):
 		data["LTTTIME_Score"] = LTTTIMEScoreNormCOVARH2019
 		data["Gesamt_Score"] += LTTTIMEScoreNormCOVARH2019
 	else:
-		data["MesswertMissing"] = True
-
-
+		data["LTTTIME_Score"] = -3
+		data["Gesamt_Score"] += -3
+		data["LTTTIME"] = 'missing'
+ 
 	# LTT Error
 	if data["LTTERROR"].isnumeric():	
 		aLTTERRORCovarH2019 = 2.558560 
@@ -188,8 +206,10 @@ def calculate_score(data):
 		data["LTTERROR_Score"] = LTTERRORScoreNormCOVARH2019 
 		data["Gesamt_Score"] +=  LTTERRORScoreNormCOVARH2019
 	else:
-		data["MesswertMissing"] = True
-
+		data["LTTERROR_Score"] = -3
+		data["Gesamt_Score"] += -3
+		data["LTTERROR"] = 'missing'    
+   
 	#  DST
 	if data["DST"].isnumeric():
 		aDSTCovarH2019 = 4.103133
@@ -214,8 +234,9 @@ def calculate_score(data):
 		data["DST_Score"] = DSTScoreNormCOVARH2019
 		data["Gesamt_Score"] += DSTScoreNormCOVARH2019
 	else:
-		data["MesswertMissing"] = True
-
+		data["DST_Score"] = -3
+		data["Gesamt_Score"] += -3
+		data["DST"] = 'missing'    
 
 	# SDOT	
 	if data["SDOT"].isnumeric():	
@@ -239,21 +260,16 @@ def calculate_score(data):
 		data["SDOT_Score"] = SDOTScoreNormCOVARH2019
 		data["Gesamt_Score"] += SDOTScoreNormCOVARH2019
 	else:
-		data["MesswertMissing"] = True
-
+		data["SDOT_Score"] = -3
+		data["Gesamt_Score"] += -3
+		data["SDOT"] = 'missing'   
+    
 	return data
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
-	form = StartForm()
-	if form.validate_on_submit(): 
-		session["patient"] =  "" 
-		session["AbspeichernOK"] = False
-		if form.AbspeichernOK.data is True:
-			session["AbspeichernOK"] = True
-		return redirect(url_for('patient'))
-	return render_template('home.html', form=form)
+	return render_template('home.html', title='PSE-Hauptseite')
 
 @app.route("/about")
 def about():
@@ -288,19 +304,71 @@ def ergebnisse():
     data["DST"] = session.get("DST")
     data["SDOT"] = session.get("SDOT")
     data["notizen"] = session.get("notizen")
-
+    data["Datum"] = datetime.now().strftime('%d.%m.%Y %H:%M')         
+     
     data = calculate_score(data)
+    
+    db_data = {}
+    db_data["Studie"] = session.get("Studie")
+    db_data["Pseudonym"] = session.get("Pseudonym")
+    db_data["age"] = session.get("age")
+    db_data["Schuljahre"] = session.get("Schuljahre")
+    db_data["gender"] = session.get("gender")
+    db_data["NCTA"] = session.get("NCTA")
+    if db_data["NCTA"] == 'missing':
+        db_data["NCTA"] = ''  
+    db_data["NCTA_Score"] = data["NCTA_Score"]
+    
+    db_data["NCTB"] = session.get("NCTB")
+    if db_data["NCTB"] == 'missing':     
+        db_data["NCTB"] = ''
+    db_data["NCTB_Score"] = data["NCTB_Score"]
+    
+    db_data["LTTTIME"] = session.get("LTTTIME")
+    if db_data["LTTTIME"] == 'missing':
+        db_data["LTTTIME"] = ''
+    db_data["LTTTIME_Score"] = data["LTTTIME_Score"]
+    
+    db_data["LTTERROR"] = session.get("LTTERROR")
+    if db_data["LTTERROR"] == 'missing': 
+        db_data["LTTERROR"] = ''  
+    db_data["LTTERROR_Score"] = data["LTTERROR_Score"]
+    
+    db_data["DST"] = session.get("DST")
+    if db_data["DST"] == 'missing':
+        db_data["DST"] = ''
+    db_data["DST_Score"] = data["DST_Score"]
+    
+    db_data["SDOT"] = session.get("SDOT")
+    if db_data["SDOT"] == 'missing':
+        db_data["SDOT"] = ''   
+    db_data["SDOT_Score"] = data["SDOT_Score"]
+    
+    db_data["Gesamt_Score"] = data["Gesamt_Score"]
+    
+    db_data["notizen"] = session.get("notizen") 
+    db_data["Datum"] = datetime.now().strftime('%d.%m.%Y %H:%M')     
 
-    if session.get("AbspeichernOK"):
-        scoresDB = ScoresDB(age=data["age"],
-                            gender=data["gender"],
-                            Schuljahre=data["Schuljahre"],
-                            NCTA=data["NCTA"],
-                            NCTB=data["NCTB"],
-                            LTTTIME=data["LTTTIME"],
-                            LTTERROR=data["LTTERROR"],
-                            DST=data["DST"],
-                            SDOT=data["SDOT"])
+    if db_data["Studie"] != "" and db_data["Pseudonym"] != "":
+        scoresDB = ScoresDB(Studie        = db_data["Studie"],
+                            Pseudonym     = db_data["Pseudonym"],
+                            Alter         = db_data["age"],
+                            Geschlecht    = db_data["gender"],
+                            Schuljahre    = db_data["Schuljahre"],
+                            NCTA          = db_data["NCTA"],
+                            NCTA_Score    = db_data["NCTA_Score"],                            
+                            NCTB          = db_data["NCTB"],
+                            NCTB_Score    = db_data["NCTB_Score"],                            
+                            LTTTIME       = db_data["LTTTIME"],
+                            LTTTIME_Score = db_data["LTTTIME_Score"],                            
+                            LTTERROR      = db_data["LTTERROR"],
+                            LTTERROR_Score= db_data["LTTERROR_Score"],                            
+                            DST           = db_data["DST"],
+                            DST_Score     = db_data["DST_Score"],                            
+                            SDOT          = db_data["SDOT"],
+                            SDOT_Score    = db_data["SDOT_Score"],      
+                            Gesamt_Score  = db_data["Gesamt_Score"],
+                            Bemerkungen   = db_data["notizen"])
         db.session.add(scoresDB)
         db.session.commit()
 
@@ -317,10 +385,27 @@ def patient():
         session["Schuljahre"] = req.get("Schuljahre")
         session["gender"] = req.get("gender")
         return redirect(url_for('messwerte'))
-    return render_template('patient.html', title='Patientendaten', 
+    return render_template('patient.html', title='Patientendaten Extern', 
     						form=form)
 
 
+@app.route("/patientMHH", methods=['GET', 'POST'])
+@basic_auth.required
+def patientMHH():
+    form = PatientMHHForm()
+    req = request.form
+    flash(u"MHH-Modus - Werte werden abgespeichert!", 'info')
+    geflasht = True 
+    if form.validate_on_submit():
+        session["Studie"] = req.get("Studie")
+        session["Pseudonym"] =  req.get("Pseudonym")
+        session["age"] =  req.get("age")
+        session["Schuljahre"] = req.get("Schuljahre")
+        session["gender"] = req.get("gender")
+        return redirect(url_for('messwerte'))
+    return render_template('patientMHH.html', title='Patientendaten MHH', 
+    						form=form)  
+  
 @app.route("/messwerte", methods=['GET', 'POST'])
 def messwerte():
     form = MesswerteForm() 
@@ -328,27 +413,27 @@ def messwerte():
     geflasht = False
     if form.validate_on_submit():
         session["NCTA"] =  req.get("NCTA") 
-        if int(session["NCTA"]) > 80:
+        if session["NCTA"].isnumeric() and int(session["NCTA"]) > 80:
           flash(u"Extremer Wert für 'Zahlen verbinden (A)' ", 'warning')
           geflasht = True          
         session["NCTB"] =  req.get("NCTB")
-        if int(session["NCTB"]) > 250:
+        if session["NCTB"].isnumeric() and int(session["NCTB"]) > 250:
           flash(u"Extremer Wert für 'Zahlen verbinden (B)' ", 'warning')
           geflasht = True           
         session["LTTTIME"] =  req.get("LTTTIME")
-        if int(session["LTTTIME"]) > 500:
+        if session["LTTTIME"].isnumeric() and int(session["LTTTIME"]) > 500:
           flash(u"Extremer Wert für 'Linien nachfahren (Zeit)' ", 'warning')
           geflasht = True           
         session["LTTERROR"] = req.get("LTTERROR")
-        if int(session["LTTERROR"]) > 200:
+        if session["LTTERROR"].isnumeric() and int(session["LTTERROR"]) > 200:
           flash(u"Extremer Wert für 'Linien nachfahren (Fehler)' ", 'warning')
           geflasht = True  
         session["DST"] =  req.get("DST")
-        if int(session["DST"]) > 400:
+        if session["DST"].isnumeric() and int(session["DST"]) > 400:
           flash(u"Extremer Wert für 'Zahlen Symbol Test' ", 'warning')
           geflasht = True          
         session["SDOT"] =  req.get("SDOT")
-        if int(session["SDOT"]) > 300:
+        if session["SDOT"].isnumeric() and int(session["SDOT"]) > 300:
           flash(u"Extremer Wert für 'Kreise punktieren' ", 'warning')
           geflasht = True           
         session["notizen"] =  req.get("notizen")
@@ -358,6 +443,6 @@ def messwerte():
     return render_template('messwerte.html', title='Messwerte', 
     						form=form)    
 
-
+  
 if __name__ == '__main__':
 	app.run(debug=True)

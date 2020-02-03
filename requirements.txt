@@ -2,3 +2,5 @@ Flask
 gunicorn
 flask-wtf
 flask-SQLAlchemy
+flask_basicauth
+flask_login
